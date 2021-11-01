@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  backend-api:
+    container_name: backend
+    build: ./
+    command: npm start -- -L
+    working_dir: /usr/src/docker-test
+    environment:
+      POSTGRES_URI: postgres://lloyd:secret@postgres:5432/docker-test
+    links:
+      - postgres
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./:/usr/src/docker-test
+
+  postgres:
+    container_name: postgres
+    environment:
+      POSTGRES_USER: lloyd
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: docker-test
+      POSTGRES_HOST: postgress
+    image: postgres
+    ports:
+      - '5432:5432'
